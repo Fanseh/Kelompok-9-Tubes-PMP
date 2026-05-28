@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "inventaris.h"
+
+void menampilkan_seluruh_data(struct Node* head){
+    if(head == NULL){
+        printf("Data inventaris masih kosong.\n");
+        return;
+    }
+
+    struct Node* current = head;
+
+    while(current != NULL){
+        int i = 1;
+        printf("================Data Barang ke-%d================\n", i);
+        printf("ID Barang               : %s\n", current->id);
+        printf("Nama Komponen/Peralatan : %s\n", current->nama);
+        printf("Kategori Barang         : %s\n", current->kategori);
+        printf("Jumlah Stok             : %d\n", current->stok);
+        printf("Lokasi Penyimpanan      : %s\n", current->lokasi);
+        printf("Status Barang           : %s\n", current->status);
+        printf("Pemilik Barang          : %s\n", current->pemilik);
+        printf("PIC Barang              : %s\n", current->pic);
+        printf("==================================================\n");
+        current = current->next;
+        i++;
+    }
+    
+}
