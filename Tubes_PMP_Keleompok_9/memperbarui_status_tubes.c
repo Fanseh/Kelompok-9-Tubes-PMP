@@ -3,13 +3,13 @@
 #include <string.h>
 #include "inventaris.h"
 
-void memperbarui_status(struct Node* head, char* target_id, char* status_baru){
+void memperbarui_status(struct inventaris* head, char* target_id, char* status_baru){
     if(head == NULL){
         printf("Data inventaris masih kosong.\n");
         return;
     }
 
-    struct Node* current = head;
+    struct inventaris* current = head;
 
     while(current != NULL){
         if(strcmp(current->id, target_id) == 0){

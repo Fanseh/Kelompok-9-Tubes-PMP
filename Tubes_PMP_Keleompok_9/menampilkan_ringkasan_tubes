@@ -3,7 +3,7 @@
 #include <string.h>
 #include "inventaris.h"
 
-void menampilkan_ringkasan(struct Node* head){
+void menampilkan_ringkasan(struct inventaris* head){
     int total = 0;
     int tersedia = 0;
     int dipinjam = 0;
@@ -14,7 +14,7 @@ void menampilkan_ringkasan(struct Node* head){
         return;
     }
 
-    struct Node* current = head;
+    struct inventaris* current = head;
 
     while(current != NULL){
         total++;

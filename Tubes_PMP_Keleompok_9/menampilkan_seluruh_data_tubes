@@ -3,13 +3,13 @@
 #include <string.h>
 #include "inventaris.h"
 
-void menampilkan_seluruh_data(struct Node* head){
+void menampilkan_seluruh_data(struct inventaris* head){
     if(head == NULL){
         printf("Data inventaris masih kosong.\n");
         return;
     }
 
-    struct Node* current = head;
+    struct inventaris* current = head;
 
     while(current != NULL){
         int i = 1;
