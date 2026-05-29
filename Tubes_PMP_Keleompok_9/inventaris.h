@@ -21,5 +21,5 @@ void menampilkan_seluruh_data(struct inventaris* head);
 void menampilkan_ringkasan(struct inventaris* head);
 void mencari_data_berdasarkan_id(struct inventaris* cari_head, const char* id_cari);
 void memperbarui_stok(struct inventaris* stok_head, const char* stok_id_cari, int stok_perubahan);
-
+void hapusData(struct inventaris** head, const char* target_id);
 #endif
