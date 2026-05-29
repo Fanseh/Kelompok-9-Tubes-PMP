@@ -40,7 +40,7 @@ void menampilkan_ringkasan(struct inventaris* head){
         current = current->next;
     }
     // display rekap ringkasan inventaris
-    printf("======Rekap Ringkasan Inventaris======\n");
+    printf("\n======Rekap Ringkasan Inventaris======\n");
     printf("Total barang            : %d\n", total);
     printf("Barang yang tersedia    : %d\n", tersedia);
     printf("Barang yang dipinjam    : %d\n", dipinjam);
