@@ -4,15 +4,17 @@
 #include "inventaris.h"
 
 void menampilkan_seluruh_data(struct inventaris* head){
+    // cek apakah list kosong
     if(head == NULL){
         printf("Data inventaris masih kosong.\n");
         return;
     }
-
+    // pointer sementara
     struct inventaris* current = head;
-
+    // looping hingga ke akhir node
     while(current != NULL){
         int i = 1;
+        // display data barang
         printf("================Data Barang ke-%d================\n", i);
         printf("ID Barang               : %s\n", current->id);
         printf("Nama Komponen/Peralatan : %s\n", current->nama);
@@ -23,6 +25,7 @@ void menampilkan_seluruh_data(struct inventaris* head){
         printf("Pemilik Barang          : %s\n", current->pemilik);
         printf("PIC Barang              : %s\n", current->pic);
         printf("==================================================\n");
+        // menggeser pointer ke node berikutnya
         current = current->next;
         i++;
     }
