@@ -1,6 +1,6 @@
 #include "inventaris.h"
 
-void memperbarui_stok(struct Node* stok_head, const char* stok_id_cari, int stok_perubahan) {
+void memperbarui_stok(struct inventaris* stok_head, const char* stok_id_cari, int stok_perubahan) {
     // Cek apakah daftar stok kosong
     // Menangani kondisi data kosong
     if (stok_head == NULL) {
@@ -8,7 +8,7 @@ void memperbarui_stok(struct Node* stok_head, const char* stok_id_cari, int stok
         return;
     }
     mencari_data_berdasarkan_id(stok_head, stok_id_cari); // Tampilkan data sebelum update
-    struct Node* stok_current = stok_head;
+    struct inventaris* stok_current = stok_head;
     int stok_ditemukan = 0;
     while (stok_current != NULL) {
         if (strcmp(stok_current->id, stok_id_cari) == 0) {

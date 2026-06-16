@@ -1,6 +1,6 @@
 #include "inventaris.h"
 
-void mencari_data_berdasarkan_id(struct Node* cari_head, const char* id_cari) {
+void mencari_data_berdasarkan_id(struct inventaris* cari_head, const char* id_cari) {
     // Cek apakah daftar stok kosong
     // Menangani kondisi data kosong
     if (cari_head == NULL) {
@@ -8,7 +8,7 @@ void mencari_data_berdasarkan_id(struct Node* cari_head, const char* id_cari) {
         return;
     }
     // Pencarian data berdasarkan ID
-    struct Node* cari_current = cari_head;
+    struct inventaris* cari_current = cari_head;
     int cari_ditemukan = 0;
     while (cari_current != NULL) {
         if (strcmp(cari_current->id, id_cari) == 0) {
