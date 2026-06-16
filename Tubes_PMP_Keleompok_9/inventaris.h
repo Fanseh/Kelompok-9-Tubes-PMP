@@ -1,8 +1,14 @@
 #ifndef INVENTARIS_H
 #define INVENTARIS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
 
 struct inventaris {
     char id[15];        
@@ -22,4 +28,12 @@ void menampilkan_ringkasan(struct inventaris* head);
 void mencari_data_berdasarkan_id(struct inventaris* cari_head, const char* id_cari);
 void memperbarui_stok(struct inventaris* stok_head, const char* stok_id_cari, int stok_perubahan);
 void hapus_data(struct inventaris** head, const char* target_id);
+void jalankan_sistem(struct inventaris** head_ref);
+void menambah_data_awal (struct inventaris** head_ref, char* id, char* nama, char* kategori, int stok, char* lokasi, char* status, char* pemilik, char* pic);
+void menambah_data      (struct inventaris*  prev_inventaris, char* id, char* nama, char* kategori, int stok, char* lokasi, char* status, char* pemilik, char* pic);
+void menambah_data_akhir(struct inventaris** head_ref, char* id, char* nama, char* kategori, int stok, char* lokasi, char* status, char* pemilik, char* pic);
+
+#ifdef __cplusplus
+}
+#endif
 #endif
