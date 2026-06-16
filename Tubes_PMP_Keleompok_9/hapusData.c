@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "inventaris.h"
 
-void hapusData(struct inventaris** head, const char* target_id) {
+void hapus_data(struct inventaris** head, const char* target_id) {
     
     if (*head == NULL) {
         printf("[ERROR] Gagal menghapus! Data inventaris masih kosong.\n");
