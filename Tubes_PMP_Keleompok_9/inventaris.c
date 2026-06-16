@@ -250,3 +250,122 @@ void menampilkan_ringkasan(struct inventaris* head) {
     printf("Barang yang habis       : %d\n", habis);
     printf("======================================\n");
 }
+
+void jalankan_sistem(struct inventaris** head_ref) {
+    int pilihan;
+    int c;
+    char input_id[15], input_nama[30], input_kategori[20];
+    char input_lokasi[20], input_status[15], input_pemilik[30], input_pic[30];
+    int input_stok;
+
+    do {
+        printf("\n======================================================\n");
+        printf("       SISTEM INVENTARISASI LABORATORIUM              \n");
+        printf("======================================================\n");
+        printf("[1] Tambah Data Barang Baru\n");
+        printf("[2] Hapus Data Barang\n");
+        printf("[3] Cari Barang Berdasarkan ID\n");
+        printf("[4] Perbarui Status Barang\n");
+        printf("[5] Tampilkan Seluruh Data\n");
+        printf("[6] Tampilkan Ringkasan & Total\n");
+        printf("[0] Keluar dari Program\n");
+        printf("------------------------------------------------------\n");
+        printf("Pilih menu (0-6): ");
+        fflush(stdout);
+
+        scanf("%d", &pilihan);
+        while ((c = getchar()) != '\n' && c != EOF);
+
+        switch (pilihan) {
+            case 1:
+                printf("\n--- Tambah Data Barang ---\n");
+
+                printf("Masukkan ID Barang      : ");
+                fgets(input_id, sizeof(input_id), stdin);
+                input_id[strcspn(input_id, "\n")] = 0;
+
+                printf("Masukkan Nama Barang    : ");
+                fgets(input_nama, sizeof(input_nama), stdin);
+                input_nama[strcspn(input_nama, "\n")] = 0;
+
+                printf("Masukkan Kategori       : ");
+                fgets(input_kategori, sizeof(input_kategori), stdin);
+                input_kategori[strcspn(input_kategori, "\n")] = 0;
+
+                printf("Masukkan Stok           : ");
+                scanf("%d", &input_stok);
+                while ((c = getchar()) != '\n' && c != EOF);
+
+                printf("Masukkan Lokasi         : ");
+                fgets(input_lokasi, sizeof(input_lokasi), stdin);
+                input_lokasi[strcspn(input_lokasi, "\n")] = 0;
+
+                printf("Masukkan Status         : ");
+                fgets(input_status, sizeof(input_status), stdin);
+                input_status[strcspn(input_status, "\n")] = 0;
+
+                printf("Masukkan Pemilik        : ");
+                fgets(input_pemilik, sizeof(input_pemilik), stdin);
+                input_pemilik[strcspn(input_pemilik, "\n")] = 0;
+
+                printf("Masukkan PIC            : ");
+                fgets(input_pic, sizeof(input_pic), stdin);
+                input_pic[strcspn(input_pic, "\n")] = 0;
+
+                menambah_data_akhir(head_ref, input_id, input_nama, input_kategori,
+                                    input_stok, input_lokasi, input_status,
+                                    input_pemilik, input_pic);
+                printf("\n[SUKSES] Data berhasil ditambahkan!\n");
+                break;
+
+            case 2:
+                printf("\n--- Hapus Data Barang ---\n");
+                printf("Masukkan ID yang akan dihapus: ");
+                fgets(input_id, sizeof(input_id), stdin);
+                input_id[strcspn(input_id, "\n")] = 0;
+
+                // BUG FIX: 'hapusData' → 'hapus_data'
+                hapus_data(head_ref, input_id);
+                break;
+
+            case 3:
+                printf("\n--- Cari Data Barang ---\n");
+                printf("Masukkan ID yang dicari: ");
+                fgets(input_id, sizeof(input_id), stdin);
+                input_id[strcspn(input_id, "\n")] = 0;
+
+                mencari_data_berdasarkan_id(*head_ref, input_id);
+                break;
+
+            case 4:
+                printf("\n--- Perbarui Status Barang ---\n");
+                printf("Masukkan ID Barang   : ");
+                fgets(input_id, sizeof(input_id), stdin);
+                input_id[strcspn(input_id, "\n")] = 0;
+
+                printf("Masukkan Status Baru : ");
+                fgets(input_status, sizeof(input_status), stdin);
+                input_status[strcspn(input_status, "\n")] = 0;
+
+                memperbarui_status(*head_ref, input_id, input_status);
+                printf("\n[INFO] Proses pembaruan status selesai dijalankan.\n");
+                break;
+
+            case 5:
+                printf("\n--- Seluruh Data Inventaris ---\n");
+                menampilkan_seluruh_data(*head_ref);
+                break;
+
+            case 6:
+                menampilkan_ringkasan(*head_ref);
+                break;
+
+            case 0:
+                printf("\nKeluar dari sistem. Terima kasih!\n");
+                break;
+
+            default:
+                printf("\nPilihan tidak valid! Silakan masukkan angka 0-6.\n");
+        }
+    } while (pilihan != 0);
+}
