@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <avr/pgmspace.h> // Pustaka Sakti untuk Akses Flash Memory
+#include <avr/pgmspace.h>
 #include "inventaris.h"
 
-// =======================================================
-// LOOKUP TABLES (Dikunci Permanen di Flash / PROGMEM)
-// =======================================================
 const char kat_0[] PROGMEM = "-";
 const char kat_1[] PROGMEM = "Elektronik";
 const char kat_2[] PROGMEM = "Mekanik";
@@ -85,19 +82,15 @@ void cetak_header_tabel() {
 }
 
 void cetak_baris_tabel(struct inventaris* item) {
-    // Sisipkan PEMILIK_GLOBAL menggunakan %S secara statis
     printf_P(PSTR("  | %-8s | %-15s | %-15S | %-11S | %-14S | %-8d | %-8d | %-5d | %-7S |\n"),
            item->id, item->nama, 
-           PEMILIK_GLOBAL, // <-- Memanggil teks "Lab Embedded" dari Flash Memory
+           PEMILIK_GLOBAL,
            (const char*)pgm_read_word(&(TABEL_KATEGORI[item->kategori_id])), 
            (const char*)pgm_read_word(&(TABEL_LOKASI[item->lokasi_id])), 
            item->tersedia, item->dipinjam, item->rusak,
            (const char*)pgm_read_word(&(TABEL_PIC[item->pic_id])));
 }
 
-// =================================================================
-// FUNGSI OPERASI DATA
-// =================================================================
 void menambah_data_akhir(struct inventaris** head_ref, const char* id, const char* nama, 
                          uint8_t kat_id, uint8_t lok_id, uint8_t pic_id, 
                          uint8_t tersedia, uint8_t dipinjam, uint8_t rusak) {
@@ -111,9 +104,7 @@ void menambah_data_akhir(struct inventaris** head_ref, const char* id, const cha
 
     strcpy(new_node->id, id);
     strcpy(new_node->nama, nama);
-    
-    // Baris strcpy(new_node->pemilik, pemilik) telah dihapus
-    
+
     new_node->kategori_id = kat_id;
     new_node->lokasi_id = lok_id;
     new_node->pic_id = pic_id;
@@ -158,7 +149,7 @@ void mencari_data_berdasarkan_id(struct inventaris* cari_head, const char* id_ca
             printf_P(PSTR("\nResult ID: %s"), id_cari);
             cetak_header_tabel(); 
             cetak_baris_tabel(current);
-            cetak_garis_tabel(); // <-- Garis penutup bawah
+            cetak_garis_tabel();
             return;
         }
         current = current->next;
@@ -173,7 +164,7 @@ void menampilkan_seluruh_data(struct inventaris* head) {
         cetak_baris_tabel(head); 
         head = head->next; 
     }
-    cetak_garis_tabel(); // <-- Garis penutup bawah
+    cetak_garis_tabel();
 }
 
 void memperbarui_kuantitas(struct inventaris* head, const char* id_cari) {
@@ -182,7 +173,6 @@ void memperbarui_kuantitas(struct inventaris* head, const char* id_cari) {
         if (strcmp(current->id, id_cari) == 0) {
             int pilihan, jumlah;
             
-            // Cetak UI Tabel Menu dengan PROGMEM
             printf_P(PSTR("\n  +-------------------------------------------------------------+\n"));
             printf_P(PSTR("  | Update Kuantitas: %-41s |\n"), current->nama);
             printf_P(PSTR("  | Status Saat Ini -> Ada: %-3d | Pjm: %-3d | Rsk: %-3d          |\n"), 
@@ -210,14 +200,13 @@ void memperbarui_kuantitas(struct inventaris* head, const char* id_cari) {
             printf_P(PSTR("  Masukkan jumlah barang: "));
             bacaAngka(&jumlah);
 
-            // Fitur Keamanan: Pengguna tidak perlu (dan tidak boleh) memakai tanda minus lagi
             if (jumlah < 0) {
                 printf_P(PSTR("\n[ERROR] Masukkan angka positif saja!\n"));
                 return;
             }
             if (jumlah == 0) return;
-
-            // Logika Transaksional Ganda
+            
+            // Logika Pemilihan Menu
             switch (pilihan) {
                 case 1: 
                     current->tersedia += jumlah;
@@ -255,7 +244,7 @@ void menampilkan_ringkasan(struct inventaris* head) {
     int totalJenis = 0, totalTersedia = 0, totalDipinjam = 0, totalRusak = 0;
     
     while (head != NULL) {
-        totalJenis++; // Menghitung ada berapa node/jenis barang
+        totalJenis++;
         totalTersedia += head->tersedia;
         totalDipinjam += head->dipinjam;
         totalRusak += head->rusak;
@@ -270,9 +259,6 @@ void menampilkan_ringkasan(struct inventaris* head) {
     printf_P(PSTR("===============================\n"));
 }
 
-// =================================================================
-// MENU UTAMA SISTEM
-// =================================================================
 void jalankan_sistem(struct inventaris** head_ref) {
     int pilihan;
     char id[4], nama[16];
@@ -280,11 +266,11 @@ void jalankan_sistem(struct inventaris** head_ref) {
 
     do {
         printf_P(PSTR("\n=====================================\n"));
-        printf_P(PSTR(" SISTEM INVENTARISASI (BARE-METAL)   \n"));
+        printf_P(PSTR("          SISTEM INVENTARISASI          \n"));
         printf_P(PSTR("=====================================\n"));
         printf_P(PSTR("[1] Tambah Data\n[2] Hapus Data\n[3] Cari via ID\n"));
         printf_P(PSTR("[4] Update Kuantitas\n[5] Lihat Semua Data\n[6] Ringkasan\n"));
-        printf_P(PSTR("[7] Uji Kapasitas (Stress Test)\n[0] Keluar\n"));
+        printf_P(PSTR("[0] Keluar\n"));
         printf_P(PSTR("Pilih menu: "));
         
         bacaAngka(&pilihan);
@@ -294,15 +280,12 @@ void jalankan_sistem(struct inventaris** head_ref) {
                 printf_P(PSTR("\nID Barang: ")); bacaString(id, sizeof(id));
                 printf_P(PSTR("Nama Komponen: ")); bacaString(nama, sizeof(nama));
                 
-                // Prompt "Nama Pemilik:" telah dihapus sepenuhnya
-                
-                printf_P(PSTR("\nKategori (1.Elektronik, 2.Mekanik, 3.Bahan Habis, 4.Alat Ukur): ")); bacaAngka(&kat_id);
+                printf_P(PSTR("\nKategori (1.Elektronik, 2.Mekanik, 3.Alat Ukur, 4.Lainnya): ")); bacaAngka(&kat_id);
                 printf_P(PSTR("Lokasi (1.Lemari A, 2.Lemari B, 3.Gudang, 4.Meja Praktikum): ")); bacaAngka(&lok_id);
                 printf_P(PSTR("PIC (1.Budi, 2.Siti, 3.Andi, 4.Laboran): ")); bacaAngka(&pic_id);
                 
                 printf_P(PSTR("\nKuantitas Awal (Stok Tersedia): ")); bacaAngka(&ada);
                 
-                // Variabel parameter 'pemilik' tidak lagi dikirimkan ke fungsi ini
                 menambah_data_akhir(head_ref, id, nama, 
                                     (uint8_t)kat_id, (uint8_t)lok_id, (uint8_t)pic_id, 
                                     (uint8_t)ada, 0, 0);
@@ -327,7 +310,6 @@ void jalankan_sistem(struct inventaris** head_ref) {
                     snprintf(temp_id, sizeof(temp_id), "%d", i);
                     snprintf(temp_nama, sizeof(temp_nama), "Dummy %d", i);
                     
-                    // Hilangkan parameter "AutoBot" (pemilik) dari Hardcode Stress Test
                     menambah_data_akhir(head_ref, temp_id, temp_nama, 
                                         1, 1, 1, 10, 0, 0);
                 }

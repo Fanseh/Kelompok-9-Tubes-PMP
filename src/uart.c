@@ -1,17 +1,17 @@
 #include <avr/io.h>
 #include "uart.h"
 
-// Arduino Uno berjalan pada 16 MHz
+// Arduino Uno dengan aktivasi 16 MHz
 #define F_CPU 16000000UL
 #define BAUD 9600
 #define BRC ((F_CPU/16/BAUD) - 1)
 
 void uart_init(void) {
-    // Mengatur Baud Rate (Kecepatan transfer)
+    // Mengatur Baud Rate
     UBRR0H = (BRC >> 8);
     UBRR0L = BRC;
     
-    // Mengaktifkan pin TX (Transmit) dan RX (Receive)
+    // Mengaktifkan pin TX dan RX
     UCSR0B = (1 << TXEN0) | (1 << RXEN0);
     
     // Mengatur format frame data: 8 bit, 1 stop bit

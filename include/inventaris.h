@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-// 1. STRUKTUR DATA ULTRA-OPTIMIZED (Kini Hanya 32 Byte!)
+// Struktur Data Optimal (28 Byte)
 struct inventaris {
     char id[4];            // 4 Byte
     char nama[16];         // 16 Byte
@@ -19,14 +19,13 @@ struct inventaris {
     struct inventaris* next; // 2 Byte
 };
 
-// 2. DEKLARASI FUNGSI
+// Deklarasi Fungsi
 void bacaString(char* buffer, int max_len);
 void bacaAngka(int* hasil);
 void cetak_header_tabel();
 void cetak_baris_tabel(struct inventaris* item);
 void cek_id_duplikat(struct inventaris* head, const char* id_baru, int* hasil);
 
-// Hapus 'const char* pemilik' dari parameter fungsi ini
 void menambah_data_akhir(struct inventaris** head_ref, const char* id, const char* nama, 
                          uint8_t kat_id, uint8_t lok_id, uint8_t pic_id, 
                          uint8_t tersedia, uint8_t dipinjam, uint8_t rusak);
